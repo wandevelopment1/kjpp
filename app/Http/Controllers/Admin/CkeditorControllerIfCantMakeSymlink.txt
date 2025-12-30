@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class CkeditorController extends Controller
+{
+    public function upload(Request $request)
+{
+    if ($request->hasFile('upload')) {
+        $file = $request->file('upload');
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        $storagePath = base_path('../public_html/storage/ckeditor');
+
+        // Buat folder jika belum ada
+        if (!file_exists($storagePath)) {
+            mkdir($storagePath, 0775, true);
+        }
+
+        // Pindahkan file ke folder storage
+        $file->move($storagePath, $filename);
+
+        $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+        $url = asset('storage/ckeditor/' . $filename);
+        $msg = 'Gambar berhasil diunggah';
+
+        return response("<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>");
+    }
+
+    return response('Gagal upload', 400);
+}
+
+}
+

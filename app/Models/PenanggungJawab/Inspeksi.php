@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models\PenanggungJawab;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Inspeksi extends Model
+{
+    use HasFactory;
+
+    protected $table = 'penanggung_jawab_inspeksi';
+
+    protected $fillable = [
+        'name',
+        'no_mappi',
+        'no_izin_penilai',
+        'no_rmk',
+    ];
+}
